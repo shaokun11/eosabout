@@ -12,3 +12,17 @@ contract Test2 {
     }
 
 }
+
+
+interface Service {
+     function notify(string _notification) external;
+}
+
+contract Test3 {
+
+    Service public test2Instance = Service(0x1e342db1d7557b1cb488a30b4d3615c2e9759b25);
+
+    function callNotify(string _notify) external {
+        test2Instance.notify(_notify);
+    }
+}

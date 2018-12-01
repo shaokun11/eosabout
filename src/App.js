@@ -31,7 +31,7 @@ class App extends Component {
         const requiredFields = {accounts: [network]};
         this.state.scatter.getIdentity(requiredFields).then(() => {
             const account = this.state.scatter.identity.accounts.find(x => x.blockchain === 'eos');
-            console.log(account)
+            console.log(account);
             const eosOptions = {expireInSeconds: 60};
             const eos = this.state.scatter.eos(network, Eos, eosOptions);
             const transactionOptions = {authorization: [`${account.name}@${account.authority}`]};
@@ -62,11 +62,12 @@ class App extends Component {
         });
     }
 
-    showtable() {
+    showtable(name,table) {
+
         this.state.scatter.eos(network, Eos).getTableRows({
-            code: "shaokun11111",
-            scope: "shaokun11111",
-            table: "person",
+            code: name,
+            scope: name,
+            table: table,
             json: true
         }).then(res => {
                 console.log(res);
@@ -84,7 +85,8 @@ class App extends Component {
                         this.takeAction("upsert", ["my name is  " + num, num])
                     }}>upsert</button>
                     <button onClick={() =>   this.takeAction("erase",[])}>erase</button>
-                    <button onClick={() => this.showtable()}>show table</button>
+                    <button onClick={() => this.showtable("shaokun11111","person")}>show person table</button>
+                    <button onClick={() => this.showtable("shaokun11112","counter")}>show counter table</button>
                 </div>
                 <div>
                     <p>below is data</p>

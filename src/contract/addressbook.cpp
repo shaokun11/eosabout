@@ -20,12 +20,14 @@ public:
                 row.age = age;
             });
             send_summary(user, "emplace data");
+            counter(user,"emplace");
         } else {
             addresses.modify(itr, user, [&](auto& row){
                         row.first_name = first_name;
                         row.age = age;
             });
             send_summary(user, "modify data");
+            counter(user,"modify");
         }
     }
 
@@ -36,11 +38,14 @@ public:
         auto itr = addresses.find(user.value);
         eosio_assert(itr != addresses.end(),"record not exist");
         addresses.erase(itr);
-        send_summary(user, "erase data");
+        // 调用inline action
+        send_summary(user, " erase data");
+        counter(user,"erase");
     }
 
     [[eosio::action]]
     void notify(name user, std::string){
+        // inline action
         require_auth(get_self());
         require_recipient(user);
     }
@@ -56,7 +61,8 @@ private:
         };
     };
     typedef multi_index<"person"_n, person> address_index;
- 
+    
+    // line action的具体实现
     void send_summary(name user, std::string msg){
         action(
             permission_level{get_self(),"active"_n},
@@ -64,6 +70,15 @@ private:
                 "notify"_n,
                 std::make_tuple(user, name{user}.to_string() +msg)
             ).send();
+    }
+    void counter(name user, std::string type){
+        action counter = action(
+            permission_level{get_self(),"active"_n},// 执行这个inline aciton所需要的权限,即本合约调用
+            "shaokun11112"_n,                       // 账号名称
+            "count"_n,                              // action 名称
+            std::make_tuple(user,type)              // 传递的参数
+            );
+        counter.send();
     }
 };
 EOSIO_DISPATCH(addressbook,(upsert)(erase))
