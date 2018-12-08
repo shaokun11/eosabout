@@ -1,6 +1,0 @@
-rinkeby test net
-
-test2
-0x1e342db1d7557b1cb488a30b4d3615c2e9759b25
-test3
-0x66bf75128d9d763e14d09044bf6afd753d6545be
