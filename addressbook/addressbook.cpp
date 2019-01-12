@@ -53,6 +53,10 @@ public:
     require_recipient(user);
   }
 
+  void transfer(uint64_t receiver, uint64_t code){
+    send_summary(name(code), "eosio.token transfer");
+  }
+
 private:
   struct [[eosio::table]] person {
     name key;
@@ -75,21 +79,19 @@ private:
 };
 
 extern "C" {
-    void apply(uint64_t receiver, uint64_t code, uint64_t action) {
-        auto self = receiver;
-        if( code == self ) {
-          addressbook _addressbook(name(receiver),name(code),datastream<const char*>(nullptr,0));
-          switch(action) {
-            case name("upsert").value: 
-              execute_action(name(receiver), name(code), &addressbook::upsert); 
-              break;
-            case name("notify").value: 
-              execute_action(name(receiver), name(code), &addressbook::notify); 
-              break;
-            case name("erase").value: 
-              execute_action(name(receiver), name(code), &addressbook::erase); 
-              break;
-          }
-        }
+  void apply(uint64_t receiver, uint64_t code, uint64_t action) {
+    addressbook _addressbook(name(receiver),name(code),datastream<const char*>(nullptr,0));
+    if(code==receiver && action==name("upsert").value) {
+      execute_action(name(receiver), name(code), &addressbook::upsert );
     }
+    else if(code==receiver && action==name("notify").value) {
+      execute_action(name(receiver), name(code), &addressbook::notify );
+    }
+    else if(code==receiver && action==name("erase").value) {
+      execute_action(name(receiver), name(code), &addressbook::erase );
+    }
+    else if(code==name("eosio.token").value && action==name("transfer").value) {
+      execute_action(name(receiver), name(code), &addressbook::transfer );
+    }
+  }
 };
