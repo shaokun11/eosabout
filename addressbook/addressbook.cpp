@@ -47,14 +47,8 @@ public:
     send_summary(user, " successfully erased record from addressbook");
   }
 
-  [[eosio::action]]
-  void notify(name user, std::string msg) {
-    require_auth(get_self());
-    require_recipient(user);
-  }
-
   void transfer(uint64_t receiver, uint64_t code){
-    send_summary(name(code), "eosio.token transfer");
+    send_summary(name(code), "eosio.token transfer by custom dispatcher");
   }
 
 private:
@@ -75,23 +69,18 @@ private:
   };
 
   typedef eosio::multi_index<"people"_n, person> address_index;
-  
 };
 
-extern "C" {
-  void apply(uint64_t receiver, uint64_t code, uint64_t action) {
-    addressbook _addressbook(name(receiver),name(code),datastream<const char*>(nullptr,0));
-    if(code==receiver && action==name("upsert").value) {
-      execute_action(name(receiver), name(code), &addressbook::upsert );
-    }
-    else if(code==receiver && action==name("notify").value) {
-      execute_action(name(receiver), name(code), &addressbook::notify );
-    }
-    else if(code==receiver && action==name("erase").value) {
-      execute_action(name(receiver), name(code), &addressbook::erase );
-    }
-    else if(code==name("eosio.token").value && action==name("transfer").value) {
-      execute_action(name(receiver), name(code), &addressbook::transfer );
-    }
-  }
-};
+#define EOSIO_DISPATCH_CUSTOM( TYPE, MEMBERS ) \
+extern "C" { \
+   void apply( uint64_t receiver, uint64_t code, uint64_t action ) { \
+      if( code == receiver || code == "eosio.token"_n.value && action == "transfer"_n.value) { \
+         switch( action ) { \
+            EOSIO_DISPATCH_HELPER( TYPE, MEMBERS ) \
+         } \
+         /* does not allow destructor of thiscontract to run: eosio_exit(0); */ \
+      } \
+   } \
+} \
+
+EOSIO_DISPATCH_CUSTOM( addressbook, (upsert)(erase)(transfer) )
