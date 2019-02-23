@@ -1,0 +1,18 @@
+https://api-kylin.eosasia.one
+
+cleos -u https://api-kylin.eosasia.one
+
+cleos -u https://api-kylin.eosasia.one system buyram eostoday1235 eostoday1235 '200.0000 EOS' -p eostoday1235@active
+
+
+cleos -u https://api-kylin.eosasia.one set contract eostoday1235 /Users/Hao/Documents/eosio.token -p eostoday1235@active
+cleos -u https://api-kylin.eosasia.one set contract eostoday1235 /Users/Hao/Documents/hello -p eostoday1235@active
+
+
+
+cleos -u https://api-kylin.eosasia.one push action eostoday1235 create '["eostoday1235","10000.0000 SHAOKUN"]'  -p eostoday1235@active
+cleos -u https://api-kylin.eosasia.one push action eostoday1235 issue '["eostoday1235","900.0000 SHAOKUN", "hello shaokun"]'  -p eostoday1235@active
+cleos -u https://api-kylin.eosasia.one push action eostoday1235 retire '["900.0000 SHAOKUN", "hello shaokun"]'  -p eostoday1235@active
+
+cleos -u https://api-kylin.eosasia.one push action eostoday1235 transfer '["eostoday1235","eostoday1234","100.0000 SHAOKUN", "hello shaokun"]'  -p eostoday1235@active
+cleos -u https://api-kylin.eosasia.one  get currency balance eostoday1235 eostoday1235 SHAOKUN
