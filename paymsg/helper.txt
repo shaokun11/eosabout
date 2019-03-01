@@ -1,0 +1,13 @@
+https://api-kylin.eosasia.one
+
+cleos -u https://api-kylin.eosasia.one
+
+
+
+cleos -u https://api-kylin.eosasia.one system buyram shaokunpay11 shaokunpay11 '200.0000 EOS' -p shaokunpay11@active
+
+cleos -u https://api-kylin.eosasia.one set contract shaokunpay11 /Users/Hao/shaokun/person/paymsg -p shaokunpay11@active
+
+cleos -u https://api-kylin.eosasia.one get table shaokunpay11 shaokunpay11 paymessage
+
+cleos -u https://api-kylin.eosasia.one push action shaokunpay11 upmsg '["eostoday1235","this is my new msg, no need eos to update"]'  -p eostoday1235@active

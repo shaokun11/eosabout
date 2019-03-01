@@ -1,0 +1,61 @@
+{
+    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Sat Feb 23 18:59:03 2019",
+    "version": "eosio::abi/1.0",
+    "structs": [
+        {
+            "name": "paymessage",
+            "base": "",
+            "fields": [
+                {
+                    "name": "player",
+                    "type": "name"
+                },
+                {
+                    "name": "tamount",
+                    "type": "uint64"
+                },
+                {
+                    "name": "uamount",
+                    "type": "uint64"
+                },
+                {
+                    "name": "msg",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "upmsg",
+            "base": "",
+            "fields": [
+                {
+                    "name": "player",
+                    "type": "name"
+                },
+                {
+                    "name": "msg",
+                    "type": "string"
+                }
+            ]
+        }
+    ],
+    "types": [],
+    "actions": [
+        {
+            "name": "upmsg",
+            "type": "upmsg",
+            "ricardian_contract": ""
+        }
+    ],
+    "tables": [
+        {
+            "name": "paymessage",
+            "type": "paymessage",
+            "index_type": "i64",
+            "key_names": [],
+            "key_types": []
+        }
+    ],
+    "ricardian_clauses": [],
+    "abi_extensions": []
+}
